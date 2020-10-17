@@ -19,11 +19,11 @@ from fastapi.exceptions import RequestValidationError, ValidationError
 from aioredis import create_redis_pool
 
 
-from core.config import settings
+from app.core.config import settings
 from app.api.v1 import api_v1_router
-from common.logger import logger
-from common import custom_exc
-from common import response_code
+from app.common.logger import logger
+from app.common import custom_exc
+from app.common import response_code
 
 
 def create_app() -> FastAPI:

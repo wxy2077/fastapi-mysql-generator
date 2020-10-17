@@ -19,12 +19,13 @@ from app.api.v1.auth.crud.user import curd_user
 
 
 def init_db(db: SessionLocal) -> None:
-    nickname = input("输入昵称:")
-    email = input("输入邮箱，登录时使用")
+    nickname = input("输入昵称(直接回车随机生成):")
+    email = input("输入邮箱(登录时使用):")
     password = input("输入密码:")
 
     if not nickname:
         nickname = "用户" + "".join(random.sample(string.digits, k=5))
+
     user_in = user_schema.UserCreate(
         nickname=nickname,
         email=email,
