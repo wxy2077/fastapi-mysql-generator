@@ -5,7 +5,7 @@
 
 
 
-## Intro
+## 简介
 使用FastAPI + MySql 作为数据库的项目生成器, 我是参考tianolo的full-stack-fastapi-postgresql项目做的。
 
 https://github.com/tiangolo/full-stack-fastapi-postgresql
@@ -91,6 +91,21 @@ python main.py
 # 或者 命令行运行(开发模式)
 uvicorn main:app --host=127.0.0.1 --port=8010 --reload
 ```
+
+<details>
+<summary>可能会出现的常见路径倒入问题</summary>
+
+```
+# 如下两种解决方式
+
+# pycharm中设置 标记为sources root
+https://www.jetbrains.com/help/pycharm/configuring-content-roots.html#specify-folder-categories
+
+# 命令行中标记为 sources root
+https://stackoverflow.com/questions/30461982/how-to-provide-make-directory-as-source-root-from-pycharm-to-terminal
+
+```
+</details>
 
 在线文档地址
 ```
