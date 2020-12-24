@@ -42,19 +42,19 @@ class Settings(BaseSettings):
     BASE_PATH: str = os.path.dirname(os.path.dirname(os.path.dirname((os.path.dirname(os.path.abspath(__file__))))))
 
     # 配置你的Mysql环境
-    MYSQL_USERNAME: str = ""
-    MYSQL_PASSWORD: str = ""
-    MYSQL_HOST: Union[AnyHttpUrl, IPvAnyAddress] = ""
+    MYSQL_USERNAME: str = "root"
+    MYSQL_PASSWORD: str = "Admin12345-"
+    MYSQL_HOST: Union[AnyHttpUrl, IPvAnyAddress] = "172.16.137.129"
     MYSQL_POET: int = 3306
-    MYSQL_DATABASE: str = 'fastapi_test'
+    MYSQL_DATABASE: str = 'temp_db_date'
 
     # Mysql地址
     SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{MYSQL_USERNAME}:{MYSQL_PASSWORD}@" \
                               f"{MYSQL_HOST}/{MYSQL_DATABASE}?charset=utf8mb4"
 
     # redis配置
-    REDIS_HOST: str = ""
-    REDIS_PASSWORD: str = ""
+    REDIS_HOST: str = "172.16.137.129"
+    REDIS_PASSWORD: str = "root12345"
     REDIS_DB: int = 0
     REDIS_PORT: int = 6379
     REDIS_URL: str = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}?encoding=utf-8"

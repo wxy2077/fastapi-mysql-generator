@@ -19,10 +19,11 @@ from tempfile import NamedTemporaryFile
 
 from sqlalchemy.orm import Session
 from sqlalchemy import text
-from fastapi import APIRouter, Depends, Request, File, UploadFile
+from fastapi import APIRouter, Depends, Request, File, UploadFile, Body
 
 from app.common import deps, response_code
 from app.core.config import settings
+from app.core.celery_app import celery_app
 from app.utils.tools_func import serialize_sqlalchemy_obj
 
 

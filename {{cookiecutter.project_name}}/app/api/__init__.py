@@ -17,7 +17,8 @@ from fastapi import FastAPI, Request, Response
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError, ValidationError
 from aioredis import create_redis_pool
-
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 
 from app.core.config import settings
 from app.api.v1 import api_v1_router
@@ -221,3 +222,17 @@ def register_redis(app: FastAPI) -> None:
         """
         app.state.redis.close()
         await app.state.redis.wait_closed()
+
+    @app.on_event("startup")
+    async def load_schedule_or_create_blank():
+        try:
+            # 存放在本地sqlite文件中 持续化
+            job_stores = {
+                'default': SQLAlchemyJobStore(url='sqlite:///jobs.sqlite')
+            }
+            schedule = AsyncIOScheduler(jobstores=job_stores)
+            schedule.start()
+            app.state.schedule = schedule
+            logger.info("Created Schedule Object")
+        except Exception as e:
+            logger.error(f"Unable to Create Schedule Object: {e}")
