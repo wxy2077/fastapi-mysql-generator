@@ -26,6 +26,23 @@ https://github.com/tiangolo/full-stack-fastapi-postgresql
 
 ## 学习博客
 
+<details>
+<summary>项目学习博客点击展开</summary>
+
+- [【FastAPI 学习 一】配置文件](https://www.cnblogs.com/CharmCode/p/14191077.html)
+- [【FastAPI 学习 二】SqlAlchemy Model模型类](https://www.cnblogs.com/CharmCode/p/14191082.html)
+- [【FastAPI 学习 三】 FastAPI SqlAlchemy MySql表迁移](https://www.cnblogs.com/CharmCode/p/14191090.html)
+- [【FastAPI 学习 四】 日志配置](https://www.cnblogs.com/CharmCode/p/14191091.html)
+- [【FastAPI 学习 五】统一响应json数据格式](https://www.cnblogs.com/CharmCode/p/14191093.html)
+- [【FastAPI 学习 六】异常处理](https://www.cnblogs.com/CharmCode/p/14191103.html)
+- [【FastAPI 学习 七】GET和POST请求参数接收以及验证](https://www.cnblogs.com/CharmCode/p/14191108.html)
+- [【FastAPI 学习 八】JWT token认证登陆](https://www.cnblogs.com/CharmCode/p/14191112.html)
+- [【FastAPI 学习 九】图片文件上传](https://www.cnblogs.com/CharmCode/p/14191116.html)
+- [【FastAPI 学习 十】使用Redis](https://www.cnblogs.com/CharmCode/p/14191119.html)
+- [【FastAPI 学习 十一】 项目目录结构demo(自己改版)](https://www.cnblogs.com/CharmCode/p/14191126.html)
+- [【FastAPI 学习 十二】定时任务篇](https://www.cnblogs.com/CharmCode/p/14191009.html)
+
+</details>
 
 
 ## 如何使用
