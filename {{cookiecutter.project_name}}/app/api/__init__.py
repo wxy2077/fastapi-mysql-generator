@@ -58,6 +58,9 @@ def create_app() -> FastAPI:
     # 挂载redis
     register_redis(app)
 
+    # 注册任务调度
+    register_scheduler(app)
+
     if settings.DEBUG:
         # 注册静态文件
         register_static_file(app)
@@ -223,16 +226,29 @@ def register_redis(app: FastAPI) -> None:
         app.state.redis.close()
         await app.state.redis.wait_closed()
 
+
+def register_scheduler(app: FastAPI) -> None:
+    """
+    注册任务调度对象
+    :param app:
+    :return:
+    """
+
     @app.on_event("startup")
     async def load_schedule_or_create_blank():
-        try:
-            # 存放在本地sqlite文件中 持续化
-            job_stores = {
-                'default': SQLAlchemyJobStore(url='sqlite:///jobs.sqlite')
-            }
-            schedule = AsyncIOScheduler(jobstores=job_stores)
-            schedule.start()
-            app.state.schedule = schedule
-            logger.info("Created Schedule Object")
-        except Exception as e:
-            logger.error(f"Unable to Create Schedule Object: {e}")
+        # 存放在本地sqlite文件中 持续化
+        job_stores = {
+            'default': SQLAlchemyJobStore(url='sqlite:///jobs.sqlite')
+        }
+        schedule = AsyncIOScheduler(jobstores=job_stores)
+        schedule.start()
+        app.state.schedule = schedule
+        logger.info("Created Schedule Object")
+
+    @app.on_event('shutdown')
+    async def shutdown_schedule():
+        """
+        关闭
+        :return:
+        """
+        app.state.schedule.shutdown()

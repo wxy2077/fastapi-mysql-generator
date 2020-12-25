@@ -61,6 +61,10 @@ async def add_job_to_scheduler(
 ):
     """
     简易的任务调度演示 可自行参考文档 https://apscheduler.readthedocs.io/en/stable/
+    三种模式
+    date: use when you want to run the job just once at a certain point of time
+    interval: use when you want to run the job at fixed intervals of time
+    cron: use when you want to run the job periodically at certain time(s) of day
     :param request:
     :param seconds:
     :param job_id:
