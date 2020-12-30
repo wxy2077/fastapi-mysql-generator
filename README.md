@@ -133,3 +133,27 @@ https://stackoverflow.com/questions/30461982/how-to-provide-make-directory-as-so
 ```
 http://127.0.0.1:8010/api/docs
 ```
+
+## 部署
+
+部署的时候，可以关闭在线文档，见学习文章一配置篇。
+
+```shell
+在main.py同文件下下启动 去掉 --reload 选项 增加 --workers
+uvicorn main:app --host=127.0.0.1 --port=8010 --workers=4
+
+# 同样可以也可以配合gunicorn多进程启动  main.py同文件下下启动 默认127.0.0.1:8010端口 gunicorn需要安装
+# 参考http://www.uvicorn.org/#running-with-gunicorn
+gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker -b 127.0.0.1:8010
+```
+<details>
+<summary>点击查看托管到后台运行</summary>
+  
+```shell
+# 1 如果为了简单省事 可以直接使用 nohup 命令 如下: run.log文件需要自行创建
+nohup /env_path/uvicorn main:app --host=127.0.0.1 --port=8010 --workers=4 > run.log 2>&1 &
+
+# 2 可以使用supervisor托管后台运行部署, 当然也可以使用其他的
+# supervisor可以参考我总结的文章 https://www.cnblogs.com/CharmCode/p/14210280.html
+```
+</details>
