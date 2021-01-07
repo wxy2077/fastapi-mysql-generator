@@ -6,7 +6,7 @@
 [中文说明](./README.md) | [English](./README-en.md)
 
 ## 简介
-使用FastAPI + MySql 作为数据库的项目生成器, 我是参考tianolo的full-stack-fastapi-postgresql项目做的。
+使用FastAPI + MySql 作为数据库的项目生成器, 我是参考FastAPI作者[tiangolo](https://github.com/tiangolo)的full-stack-fastapi-postgresql项目做的。
 
 https://github.com/tiangolo/full-stack-fastapi-postgresql
 
