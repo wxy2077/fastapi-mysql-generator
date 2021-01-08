@@ -19,11 +19,11 @@ from fastapi import Header, Depends
 from sqlalchemy.orm import Session
 from pydantic import ValidationError
 
-from app.db.session import SessionLocal
-from app.common import custom_exc
-from app.models.auth import AdminUser
-from app.core.config import settings
-from app.api.v1.auth.crud.user import curd_user
+from db.session import SessionLocal
+from common import custom_exc
+from models.auth import AdminUser
+from core.config import settings
+from api.v1.auth.crud.user import curd_user
 
 
 def get_db() -> Generator:

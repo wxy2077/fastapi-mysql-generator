@@ -44,6 +44,80 @@ https://github.com/tiangolo/full-stack-fastapi-postgresql
 
 </details>
 
+## 项目文件组织
+
+> 参考Django文件组织,FastAPI官方推荐项目生成,Flask工厂函数。
+
+<details>
+<summary>点击展开项目文件结构</summary>
+
+```
+.your_project
+|__alembic                       // alembic 自动生成的迁移配置文件夹,迁移不正确时 产看其中的env.py文件
+| |__versions/                   // 使用 alembic revision --autogenerate -m "注释" 迁移命令后 会产生映射文件
+| |__env.py                      // 自动生成的文件
+| |__script.py.mako
+|__alembic.ini                   // alembic 自动生成的迁移配置文件
+
+|____api                         // API文件夹
+| |____v1                        // 版本区分
+| | |____auth/                   // auth模块
+| | | |______init__.py
+| | | |____schemas               // auth模块 model
+| | | | |____user.py             // user验证
+| | | |____curd                  // curd 文件夹
+| | | | |____user.py             // user curd操作
+| | | |____endpoints.py          // auth模块接口
+
+| | |____item/                   // item模块
+| | | |____endpoints.py          // 模块接口
+| | | |____sys_scheduler.py      // 定时任务调度模块
+| | |____v1_router.py            // V1 API分组路由文件(可在这里按照分组添加权限验证)
+| |______init__.py               // 生成FstAPI对象 注册各种服务(重要)
+
+| |____common                    // 项目通用文件夹
+| | |______init__.py             // 导出日志文件方便导入
+| | |____curd_base.py            // curd通用基础操作对象
+| | |____custom_exc.py           // 自定义异常
+| | |____deps.py                 // 通用依赖文件,如数据库操作对象,权限验证对象
+| | |____logger.py               // 扩展日志 loguru 简单配置
+| | |____response_code.py        // 响应状态码
+
+|____core                        
+| |____config                    // 配置文件
+| | |______init__.py             // 根据虚拟环境导入不同配置
+| | |____development_config.py   // 开发配置
+| | |____production_config.py    // 生产配置
+| |____celery_app.py             // celery (目前没有使用)
+| |____security.py               // token password验证  
+        
+| |____db                        // 数据库
+| | |____base.py                 // 导出全部models 给alembic迁移用
+| | |____base_class.py           // orm model 基类
+| | |____session.py              // 链接数据库会话
+
+|____logs/                       // 日志文件夹
+
+| |____models                    // orm models 在这里面新增
+| | |____auth.py                 // 用户模块orm (记得导入到 /db/base.py 下面才会迁移成功)
+         
+|____static/                     // 静态资源文件(测试时使用，生产建议使用nginx静态资源服务器或者七牛云)
+         
+|____tests/                      // 测试文件夹
+
+| |____utils                     // 工具类
+| | |____cron_task.py            // 定时任务task文件
+| | |____tools_func.py           // 序列化orm特殊时间(但是感觉不太优雅)
+
+|____jobs.sqlite                 // 定时任务持久化sqlite 也可以使用其他的比如redis
+|____main.py                     // 启动文件
+|____create_user.py              // 生成初始化用户
+|____requirements.txt            // 依赖文件
+
+```
+
+</details>
+
 
 ## 如何使用
 
@@ -69,10 +143,10 @@ pip install -r requirements.txt
 # 进入项目下
 cd your_project/
 
-# 生成关系映射
+# 生成关系映射 (第二次生成映射记得修改提交注释 init commit)
 alembic revision --autogenerate -m "init commit"
 
-# 生成表
+# 生成表 (注意初次生成表会删除其他的表 建议在一个空数据库测试)
 alembic upgrade head
 ```
 

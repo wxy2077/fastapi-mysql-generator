@@ -15,8 +15,8 @@ from datetime import datetime
 
 from fastapi import APIRouter, Request, Query, Body
 
-from app.common import response_code
-from app.utils.cron_task import demo_task
+from common import response_code
+from utils.cron_task import demo_task
 
 router = APIRouter()
 

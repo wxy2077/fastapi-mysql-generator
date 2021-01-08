@@ -25,7 +25,7 @@ gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker -b 127.0.0.1:8020
 """
 
 
-from app.api import create_app
+from api import create_app
 
 
 app = create_app()

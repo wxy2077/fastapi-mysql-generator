@@ -20,11 +20,10 @@ from aioredis import create_redis_pool
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 
-from app.core.config import settings
-from app.api.v1 import api_v1_router
-from app.common.logger import logger
-from app.common import custom_exc
-from app.common import response_code
+from api.v1.v1_router import api_v1_router
+from core.config import settings
+from common.logger import logger
+from common import custom_exc, response_code
 
 
 def create_app() -> FastAPI:
@@ -76,7 +75,10 @@ def register_static_file(app: FastAPI) -> None:
     :param app:
     :return:
     """
+    import os
     from fastapi.staticfiles import StaticFiles
+    if not os.path.exists("./static"):
+        os.mkdir("./static")
     app.mount("/static", StaticFiles(directory="static"), name="static")
 
 

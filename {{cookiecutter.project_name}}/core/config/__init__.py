@@ -21,7 +21,7 @@
 """
 
 import os
-from app.common import logger
+from common import logger
 
 # 获取环境变量
 env = os.getenv("ENV", "")

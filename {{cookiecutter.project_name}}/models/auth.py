@@ -12,7 +12,7 @@
 """
 
 from sqlalchemy import Column, Integer, VARCHAR
-from app.db.base_class import Base, gen_uuid
+from db.base_class import Base, gen_uuid
 
 
 class AdminUser(Base):

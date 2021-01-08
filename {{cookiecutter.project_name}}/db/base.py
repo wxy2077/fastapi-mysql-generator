@@ -16,5 +16,5 @@
 
 # imported by Alembic # 方便在Alembic导入,迁移用
 
-from app.db.base_class import Base  # noqa
-from app.models.auth import AdminUser
+from db.base_class import Base  # noqa
+from models.auth import AdminUser

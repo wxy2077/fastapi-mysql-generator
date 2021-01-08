@@ -28,8 +28,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 sys.path.insert(0, BASE_DIR)
 
-from app.db.base import Base  # noqa
-from app.core.config import settings
+from db.base import Base  # noqa
+from core.config import settings
 
 target_metadata = Base.metadata
 

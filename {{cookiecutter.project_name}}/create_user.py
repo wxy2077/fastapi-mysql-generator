@@ -13,9 +13,9 @@
 import random
 import string
 
-from app.db.session import SessionLocal
-from app.api.v1.auth.schemas import user_schema
-from app.api.v1.auth.crud.user import curd_user
+from db.session import SessionLocal
+from api.v1.auth.schemas import user_schema
+from api.v1.auth.crud.user import curd_user
 
 
 def init_db(db: SessionLocal) -> None:

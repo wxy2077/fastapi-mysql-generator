@@ -18,7 +18,7 @@ https://fastapi.tiangolo.com/tutorial/bigger-applications/#import-fastapi
 
 from fastapi import APIRouter, Depends
 
-from app.common.deps import check_jwt_token
+from common.deps import check_jwt_token
 
 from .auth.endpoints import router as auth_router
 from .items.endpoints import router as items_router

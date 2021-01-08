@@ -17,10 +17,11 @@ from datetime import timedelta
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 
-from app.core import security
-from app.common import deps, response_code, logger
-from app.models import auth
-from app.core.config import settings
+from core import security
+from common import logger
+from common import deps, response_code
+from models import auth
+from core.config import settings
 
 from .schemas import user_schema
 from .crud.user import curd_user
