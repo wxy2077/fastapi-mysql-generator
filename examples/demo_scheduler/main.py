@@ -107,7 +107,6 @@ async def add_date_job(
                                     args=(job_id,),
                                     run_date=datetime.fromtimestamp(run_time),
                                     id=job_id,  # job ID
-                                    next_run_time=datetime.now()
                                     )
     return resp_ok(data={"job_id": schedule_job.id})
 
@@ -116,7 +115,8 @@ async def add_date_job(
 @app.post("/job/cron/schedule/", tags=["schedule"], summary="开启定时:crontab表达式")
 async def add_cron_job(
         job_id: str = Body(..., title="任务id", embed=True),
-        crontab: str = Body('*/1 * * * *', title="crontab 表达式")
+        crontab: str = Body('*/1 * * * *', title="crontab 表达式"),
+        run_time: int =Body(time.time(), title="第一次运行时间", description="默认立即执行", embed=True)
 ):
     res = Schedule.get_job(job_id=job_id)
     if res:
@@ -125,6 +125,7 @@ async def add_cron_job(
                                     CronTrigger.from_crontab(crontab),
                                     args=(job_id,),
                                     id=job_id,  # job ID
+                                    next_run_time=datetime.fromtimestamp(run_time)
                                     )
     return resp_ok(data={"job_id": schedule_job.id})
 
