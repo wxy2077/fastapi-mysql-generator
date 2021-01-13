@@ -1,0 +1,11 @@
+aiofiles
+aioredis
+alembic
+loguru
+fastapi
+uvicorn
+SQLAlchemy
+python-jose
+passlib
+PyMySQL
+gunicorn

@@ -1,7 +1,7 @@
-# FastAPI and MySql - 项目生成器
+# FastAPI and MySQL - 项目生成器
 
 ![Python版本](https://img.shields.io/badge/Python-3.7+-brightgreen.svg "版本号")
-![FastAPI版本](https://img.shields.io/badge/FastAPI-0.61.1-ff69b4.svg "版本号")
+![FastAPI版本](https://img.shields.io/badge/FastAPI-0.62+-ff69b4.svg "版本号")
 
 [中文说明](./README.md) | [English](./README-en.md)
 
@@ -15,7 +15,7 @@ https://github.com/tiangolo/full-stack-fastapi-postgresql
 ![demo](images/demo1.png)
 
 
-## 特点
+## 功能
 - JWT token 认证。
 - 使用SQLAlchemy models(MySql).
 - Alembic migrations 数据迁移.
@@ -65,9 +65,9 @@ https://github.com/tiangolo/full-stack-fastapi-postgresql
 | | | |______init__.py
 | | | |____schemas               // auth模块 model
 | | | | |____user.py             // user验证
-| | | |____curd                  // curd 文件夹
+| | | |____curd                  // curd 文件夹 (CURD操作和schemas还可以单独放到一个公共的文件夹下，看个人习惯和扩展吧)
 | | | | |____user.py             // user curd操作
-| | | |____endpoints.py          // auth模块接口
+| | | |____endpoints.py          // auth模块接口 (文件名随意，最好符合业务或项目规则)
 
 | | |____item/                   // item模块
 | | | |____endpoints.py          // 模块接口
@@ -128,7 +128,11 @@ pip install cookiecutter
 cookiecutter https://github.com/CoderCharm/fastapi-mysql-generator
 
 cd your_project/
+# 安装依赖库
 pip install -r requirements.txt
+
+# 建议使用 --upgrade 安装最新版 (windows系统下uvloop当前版本可能有问题  https://github.com/MagicStack/uvloop/issues/14)
+pip install --upgrade -r requirements-dev.txt
 ```
 
 ## 配置你的数据库环境
@@ -179,7 +183,7 @@ python create_user.py
 
 ```
 # 进入项目文件夹下
-cd your_project/app
+cd your_project/
 
 # 直接运行main文件
 python main.py
