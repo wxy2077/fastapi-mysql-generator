@@ -38,7 +38,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return db.query(self.model).filter(self.model.id == id, self.model.is_delete == 0).first()
 
     def get_multi(
-            self, db: Session, *, page: int = 0, page_size: int = 100
+            self, db: Session, *, page: int = 1, page_size: int = 100
     ) -> List[ModelType]:
         temp_page = (page - 1) * page_size
         return db.query(self.model).filter(self.model.is_delete == 0).offset(temp_page).limit(page_size).all()

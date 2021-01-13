@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     # 开发模式配置
     DEBUG: bool = True
     # 项目文档
-    TITLE: str = "FastAPI+MySql项目生成"
+    TITLE: str = "FastAPI+MySQL项目生成"
     DESCRIPTION: str = "更多FastAPI知识，请关注我的个人网站 https://www.charmcode.cn/"
     # 文档地址 默认为docs
     DOCS_URL: str = "/api/docs"

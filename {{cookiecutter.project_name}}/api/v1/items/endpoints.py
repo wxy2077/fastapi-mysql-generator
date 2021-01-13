@@ -19,12 +19,11 @@ from tempfile import NamedTemporaryFile
 
 from sqlalchemy.orm import Session
 from sqlalchemy import text
-from fastapi import APIRouter, Depends, Request, File, UploadFile
+from fastapi import APIRouter, Depends, Request, File, UploadFile, Query
 
+from api.v1.auth.crud.user import curd_user
 from common import deps, response_code
 from core.config import settings
-from utils.tools_func import serialize_sqlalchemy_obj
-
 
 router = APIRouter()
 
@@ -45,18 +44,25 @@ async def items_test(
     # 等待 redis读取
     redis_test = await request.app.state.redis.get("test_items")
 
-    # 用不惯orm查询的可以手撸sql 使用 from sqlalchemy import text 可以自动转义字符 避免sql注入
+    # 用不惯orm查询的可以直接sql(建议把CURD操作单独放到其他文件夹下,统一管理)
     test_sql = "SELECT * from admin_user WHERE id>=:id"
     admin_user_res = db.execute(text(test_sql), {"id": 1}).fetchall()
 
-    # 手动序列化查询后的结果集
-    admin_user_info = serialize_sqlalchemy_obj(admin_user_res)
-
     return response_code.resp_200(data={
         "items": "ok",
-        "admin_user_info": admin_user_info,
+        "admin_user_info": admin_user_res,
         "redis_test": redis_test
     })
+
+
+@router.get("/user/all", summary="获取所有用户信息")
+async def get_all_user_info(
+        page: int = Query(1),  # 分页等通用字段可以提取出来封装
+        page_size: int = Query(20),
+        db: Session = Depends(deps.get_db),
+):
+    all_user = curd_user.get_multi(db=db, page=page, page_size=page_size)
+    return response_code.resp_200(data=all_user)
 
 
 @router.post("/upload/file", summary="上传图片")
