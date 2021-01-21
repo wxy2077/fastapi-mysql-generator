@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2020/10/16 13:38
 # @Author  : CoderCharm
-# @File    : index.py
+# @File    : sys_user.py
 # @Software: PyCharm
 # @Github  : github/CoderCharm
 # @Email   : wg_python@163.com
@@ -23,8 +23,8 @@ from common import deps, response_code
 from models import auth
 from core.config import settings
 
-from .schemas import user_schema
-from .crud.user import curd_user
+from schemas import user_schema
+from service.sys_user import curd_user
 
 router = APIRouter()
 

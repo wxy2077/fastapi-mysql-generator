@@ -17,12 +17,12 @@ https://fastapi.tiangolo.com/tutorial/bigger-applications/#import-fastapi
 """
 
 from fastapi import APIRouter, Depends
-
 from common.deps import check_jwt_token
 
-from .auth.endpoints import router as auth_router
-from .items.endpoints import router as items_router
-from .items.sys_scheduler import router as scheduler_router
+from api.v1.sys_user import router as auth_router
+from api.v1.items import router as items_router
+from api.v1.sys_scheduler import router as scheduler_router
+
 
 api_v1_router = APIRouter()
 api_v1_router.include_router(auth_router, prefix="/admin/auth", tags=["用户"])

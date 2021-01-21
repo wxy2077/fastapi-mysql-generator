@@ -21,8 +21,7 @@ import os
 import time
 from loguru import logger
 
-# basedir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-basedir = os.path.dirname(os.path.dirname((os.path.dirname(os.path.abspath(__file__)))))
+basedir = os.path.dirname(os.path.dirname((os.path.abspath(__file__))))
 
 # 定位到log日志文件
 log_path = os.path.join(basedir, 'logs')

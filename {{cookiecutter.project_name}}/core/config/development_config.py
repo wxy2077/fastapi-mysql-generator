@@ -39,7 +39,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str = 'aeq)s(*&(&)()WEQasd8**&^9asda_asdasd*&*&^+_sda'
 
     # 项目根路径
-    BASE_PATH: str = os.path.dirname(os.path.dirname(os.path.dirname((os.path.dirname(os.path.abspath(__file__))))))
+    BASE_PATH: str = os.path.dirname(os.path.dirname(os.path.dirname((os.path.abspath(__file__)))))
 
     # 配置你的Mysql环境
     MYSQL_USERNAME: str = "root"

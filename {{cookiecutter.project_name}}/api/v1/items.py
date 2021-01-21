@@ -21,7 +21,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 from fastapi import APIRouter, Depends, Request, File, UploadFile, Query
 
-from api.v1.auth.crud.user import curd_user
+from service.sys_user import curd_user
 from common import deps, response_code
 from core.config import settings
 
@@ -32,19 +32,21 @@ router = APIRouter()
 async def items_test(
         request: Request,
         *,
+        bar: str = Query(..., title="测试字段", description="测试字段描述"),
         db: Session = Depends(deps.get_db),
 ) -> Any:
     """
     用户登录
     :param request:
+    :param bar:
     :param db:
     :return:
     """
-    await request.app.state.redis.set("test_items", 123, expire=30)
+    await request.app.state.redis.set("test_items", bar, expire=30)
     # 等待 redis读取
     redis_test = await request.app.state.redis.get("test_items")
 
-    # 用不惯orm查询的可以直接sql(建议把CURD操作单独放到其他文件夹下,统一管理)
+    # 用不惯orm查询的可以直接sql(建议把CURD操作单独放到service文件夹下,统一管理)
     test_sql = "SELECT * from admin_user WHERE id>=:id"
     admin_user_res = db.execute(text(test_sql), {"id": 1}).fetchall()
 
@@ -69,9 +71,10 @@ async def get_all_user_info(
 async def upload_image(
         file: UploadFile = File(...),
 ):
-
     # 本地存储临时方案，一般生产都是使用第三方云存储OSS(如七牛云, 阿里云)
-    save_dir = f"{settings.BASE_PATH}/app/static/img"
+    # 建议计算并记录一次 文件md5值 避免重复存储相同资源
+    save_dir = f"{settings.BASE_PATH}/static/img"
+
     if not os.path.exists(save_dir):
         os.mkdir(save_dir)
     try:

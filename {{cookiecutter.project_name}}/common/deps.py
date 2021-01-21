@@ -23,7 +23,7 @@ from db.session import SessionLocal
 from common import custom_exc
 from models.auth import AdminUser
 from core.config import settings
-from api.v1.auth.crud.user import curd_user
+from service.sys_user import curd_user
 
 
 def get_db() -> Generator:
@@ -39,7 +39,7 @@ def get_db() -> Generator:
 
 
 def check_jwt_token(
-     token: Optional[str] = Header(...)
+     token: Optional[str] = Header(..., description="登录token")
 ) -> Union[str, Any]:
     """
     解析验证token  默认验证headers里面为token字段的数据

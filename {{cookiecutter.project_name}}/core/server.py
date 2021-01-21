@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2020/10/15 16:24
 # @Author  : CoderCharm
-# @File    : __init__.py.py
+# @File    : server.py.py
 # @Software: PyCharm
 # @Github  : github/CoderCharm
 # @Email   : wg_python@163.com
@@ -20,7 +20,7 @@ from aioredis import create_redis_pool
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 
-from api.v1.v1_router import api_v1_router
+from router.v1_router import api_v1_router
 from core.config import settings
 from common.logger import logger
 from common import custom_exc, response_code
@@ -173,7 +173,8 @@ def register_exception(app: FastAPI) -> None:
         """
         logger.error(
             f"请求参数格式错误\nURL:{request.method}{request.url}\nHeaders:{request.headers}\n{traceback.format_exc()}")
-        return response_code.resp_4001(message=exc.errors())
+        # return response_code.resp_4001(message=exc.errors())
+        return response_code.resp_4001(message='; '.join([f"{e['loc'][1]}: {e['msg']}" for e in exc.errors()]))
 
     # 捕获全部异常
     @app.exception_handler(Exception)

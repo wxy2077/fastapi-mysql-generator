@@ -46,7 +46,7 @@ https://github.com/tiangolo/full-stack-fastapi-postgresql
 
 ## 项目文件组织
 
-> 参考Django文件组织,FastAPI官方推荐项目生成,Flask工厂函数。
+> 参考Django文件组织,FastAPI官方推荐项目生成,Flask工厂函数,[gin-vue-admin server文件组织](https://github.com/flipped-aurora/gin-vue-admin)
 
 <details>
 <summary>点击展开项目文件结构</summary>
@@ -61,19 +61,9 @@ https://github.com/tiangolo/full-stack-fastapi-postgresql
 
 |____api                         // API文件夹
 | |____v1                        // 版本区分
-| | |____auth/                   // auth模块
-| | | |______init__.py
-| | | |____schemas               // auth模块 model
-| | | | |____user.py             // user验证
-| | | |____curd                  // curd 文件夹 (CURD操作和schemas还可以单独放到一个公共的文件夹下，看个人习惯和扩展吧)
-| | | | |____user.py             // user curd操作
-| | | |____endpoints.py          // auth模块接口 (文件名随意，最好符合业务或项目规则)
-
-| | |____item/                   // item模块
-| | | |____endpoints.py          // 模块接口
 | | | |____sys_scheduler.py      // 定时任务调度模块
-| | |____v1_router.py            // V1 API分组路由文件(可在这里按照分组添加权限验证)
-| |______init__.py               // 生成FstAPI对象 注册各种服务(重要)
+| | | |____sys_user.py           // user 模块
+| | | |____items.py              // 一些接口示例
 
 | |____common                    // 项目通用文件夹
 | | |______init__.py             // 导出日志文件方便导入
@@ -90,6 +80,7 @@ https://github.com/tiangolo/full-stack-fastapi-postgresql
 | | |____production_config.py    // 生产配置
 | |____celery_app.py             // celery (目前没有使用)
 | |____security.py               // token password验证  
+| |____server.py                 // 核心服务文件(重要) 
         
 | |____db                        // 数据库
 | | |____base.py                 // 导出全部models 给alembic迁移用
@@ -101,6 +92,15 @@ https://github.com/tiangolo/full-stack-fastapi-postgresql
 | |____models                    // orm models 在这里面新增
 | | |____auth.py                 // 用户模块orm (记得导入到 /db/base.py 下面才会迁移成功)
          
+| |____router                    // 路由模块
+| | |____v1_router.py            // V1 API分组路由文件(可在这里按照分组添加权限验证)
+
+| |____schemas                   // 请求 或者 响应的 Pydantic model(作者目前也写了一个 pydantic-sqlalchemy 互转的库 https://github.com/tiangolo/pydantic-sqlalchemy 但是感觉不太完善)
+| | |____user_schema.py          // 用户模块请求model验证
+
+| |____service                   // ORM 操作文件夹
+| | |____sys_user.py             // user curd操作
+
 |____static/                     // 静态资源文件(测试时使用，生产建议使用nginx静态资源服务器或者七牛云)
          
 |____tests/                      // 测试文件夹
