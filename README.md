@@ -212,6 +212,26 @@ https://stackoverflow.com/questions/30461982/how-to-provide-make-directory-as-so
 http://127.0.0.1:8010/api/docs
 ```
 
+## 接口测试
+
+需要安装
+
+```shell
+pip install pytest
+```
+> 手动创建一个测试用户(直接python create_user.py)
+
+```
+账号: test@test.com
+密码: test 
+```
+
+在项目下 启动测试用例
+```
+pytest
+```
+
+
 ## 部署
 
 部署的时候，可以关闭在线文档，见学习文章一配置篇。
