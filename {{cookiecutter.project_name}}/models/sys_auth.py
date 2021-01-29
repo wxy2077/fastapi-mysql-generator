@@ -15,11 +15,10 @@ from sqlalchemy import Column, Integer, VARCHAR
 from db.base_class import Base, gen_uuid
 
 
-class AdminUser(Base):
+class SysUser(Base):
     """
-    管理员表
+    用户表
     """
-    __tablename__ = "admin_user"
     user_id = Column(VARCHAR(32), default=gen_uuid, unique=True, comment="用户id")
     email = Column(VARCHAR(128), unique=True, index=True, nullable=False, comment="邮箱")
     phone = Column(VARCHAR(16), unique=True, index=True, nullable=True, comment="手机号")
@@ -27,5 +26,19 @@ class AdminUser(Base):
     avatar = Column(VARCHAR(256), comment="管理员头像")
     hashed_password = Column(VARCHAR(128), nullable=False, comment="密码")
     is_active = Column(Integer, default=False, comment="邮箱是否激活 0=未激活 1=激活", server_default="0")
-    role_id = Column(Integer, comment="角色表")
-    __table_args__ = ({'comment': '管理员表'})
+    authority_id = Column(Integer, default=100, comment="角色id")
+    __table_args__ = ({'comment': '系统用户表'})
+
+
+class SysAuthorities(Base):
+    """
+    角色表
+    """
+    authority_id = Column(Integer, default=100, unique=True, comment="权限id")
+    authority_name = Column(VARCHAR(32), comment="角色名")
+    parent_id = Column(Integer,  nullable=True, unique=True, comment="父角色id")
+    __table_args__ = ({'comment': '用户角色表'})
+
+
+
+

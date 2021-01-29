@@ -9,3 +9,4 @@ python-jose
 passlib
 PyMySQL
 gunicorn
+databases[mysql]

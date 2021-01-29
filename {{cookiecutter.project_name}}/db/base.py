@@ -17,4 +17,5 @@
 # imported by Alembic # 方便在Alembic导入,迁移用
 
 from db.base_class import Base  # noqa
-from models.auth import AdminUser
+from models.sys_auth import SysUser, SysAuthorities
+from models.sys_api import SysApi

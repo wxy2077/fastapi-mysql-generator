@@ -22,13 +22,15 @@ from sqlalchemy import text
 from fastapi import APIRouter, Depends, Request, File, UploadFile, Query
 
 from service.sys_user import curd_user
-from common import deps, response_code
+from common import deps
+from schemas.response import response_code
 from core.config import settings
+from db.sys_redis import redis_client
 
 router = APIRouter()
 
 
-@router.get("/test", summary="用户登录认证")
+@router.get("/test", summary="用户登录认证", name="测试接口")
 async def items_test(
         request: Request,
         *,
@@ -42,12 +44,16 @@ async def items_test(
     :param db:
     :return:
     """
-    await request.app.state.redis.set("test_items", bar, expire=30)
-    # 等待 redis读取
-    redis_test = await request.app.state.redis.get("test_items")
+    # 挂载在request对象上 着实不方便
+    # await request.app.state.redis.set("test_items", bar, expire=30)
+    # # 等待 redis读取
+    # redis_test = await request.app.state.redis.get("test_items")
+
+    redis_client.set("test_items", bar, ex=60)
+    redis_test = redis_client.get("test_items")
 
     # 用不惯orm查询的可以直接sql(建议把CURD操作单独放到service文件夹下,统一管理)
-    test_sql = "SELECT * from admin_user WHERE id>=:id"
+    test_sql = "SELECT nickname,avatar from sys_user WHERE id>=:id"
     admin_user_res = db.execute(text(test_sql), {"id": 1}).fetchall()
 
     return response_code.resp_200(data={
@@ -57,7 +63,7 @@ async def items_test(
     })
 
 
-@router.get("/user/all", summary="获取所有用户信息")
+@router.get("/user/all", summary="获取所有用户信息", name="获取用户信息")
 async def get_all_user_info(
         page: int = Query(1),  # 分页等通用字段可以提取出来封装
         page_size: int = Query(20),
@@ -67,7 +73,7 @@ async def get_all_user_info(
     return response_code.resp_200(data=all_user)
 
 
-@router.post("/upload/file", summary="上传图片")
+@router.post("/upload/file", summary="上传图片", name="上传图片")
 async def upload_image(
         file: UploadFile = File(...),
 ):

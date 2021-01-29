@@ -15,7 +15,6 @@ import uuid
 from datetime import datetime
 
 from sqlalchemy import Column, Integer, DateTime
-
 from sqlalchemy.sql import func
 from sqlalchemy.ext.declarative import as_declarative, declared_attr
 

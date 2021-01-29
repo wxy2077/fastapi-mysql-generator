@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2020/10/16 13:43
 # @Author  : CoderCharm
-# @File    : user_schema.py
+# @File    : sys_user_schema.py
 # @Software: PyCharm
 # @Github  : github/CoderCharm
 # @Email   : wg_python@163.com
@@ -42,7 +42,7 @@ class UserCreate(UserBase):
     nickname: str
     email: EmailStr
     password: str
-    role_id: int = 1
+    authority_id: int = 1
     avatar: Optional[AnyHttpUrl] = None
 
 

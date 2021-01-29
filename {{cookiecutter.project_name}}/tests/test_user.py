@@ -18,7 +18,6 @@ import sys
 # 解决包导入问题
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-
 from fastapi.testclient import TestClient
 from core.server import create_app
 
@@ -62,4 +61,3 @@ def test_get_user():
     assert response.status_code == 200
     assert response.json()["code"] == 200
     assert isinstance(response.json()["data"]["nickname"], str)
-

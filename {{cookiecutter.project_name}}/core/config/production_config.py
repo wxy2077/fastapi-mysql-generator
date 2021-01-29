@@ -67,5 +67,8 @@ class Settings(BaseSettings):
     REDIS_PORT: int = 6379
     REDIS_URL: str = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}?encoding=utf-8"
 
+    CASBIN_MODEL_PATH: str = "./resource/rbac_model.conf"
+
 
 settings = Settings()
+

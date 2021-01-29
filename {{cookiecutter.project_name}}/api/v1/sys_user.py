@@ -19,21 +19,22 @@ from fastapi import APIRouter, Depends
 
 from core import security
 from common import logger
-from common import deps, response_code
-from models import auth
+from common import deps
+from schemas.response import response_code
+from models import sys_auth
 from core.config import settings
 
-from schemas import user_schema
+from schemas.request import sys_user_schema
 from service.sys_user import curd_user
 
 router = APIRouter()
 
 
-@router.post("/login/access-token", summary="用户登录认证")
+@router.post("/login/access-token", summary="用户登录认证", name="登录")
 async def login_access_token(
         *,
         db: Session = Depends(deps.get_db),
-        user_info: user_schema.UserEmailAuth,
+        user_info: sys_user_schema.UserEmailAuth,
 ) -> Any:
     """
     用户JWT登录
@@ -52,19 +53,19 @@ async def login_access_token(
 
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
 
-    # 登录token 只存放了user.id
+    # 登录token 存储了user.id 和 authority_id
     return response_code.resp_200(data={
-        "token": security.create_access_token(user.id, expires_delta=access_token_expires),
+        "token": security.create_access_token(user.id, user.authority_id, expires_delta=access_token_expires),
     })
 
 
-@router.get("/user/info", summary="获取用户信息")
+@router.get("/user/info", summary="获取用户信息", name="获取用户信息", description="此API没有验证权限")
 async def get_user_info(
         *,
-        current_user: auth.AdminUser = Depends(deps.get_current_user)
+        current_user: sys_auth.SysUser = Depends(deps.get_current_user)
 ) -> Any:
     """
-    获取用户信息
+    获取用户信息 这个路由分组没有验证权限
     :param current_user:
     :return:
     """

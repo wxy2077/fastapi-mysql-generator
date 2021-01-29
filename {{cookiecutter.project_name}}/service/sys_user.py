@@ -16,15 +16,15 @@ from typing import Optional
 from sqlalchemy.orm import Session
 
 from core.security import get_password_hash, verify_password
-from common.curd_base import CRUDBase
-from models.auth import AdminUser
-from schemas import user_schema
+from service.curd_base import CRUDBase
+from models.sys_auth import SysUser
+from schemas.request import sys_user_schema
 
 
-class CRUDUser(CRUDBase[AdminUser, user_schema.UserCreate, user_schema.UserUpdate]):
+class CRUDUser(CRUDBase[SysUser, sys_user_schema.UserCreate, sys_user_schema.UserUpdate]):
 
     @staticmethod
-    def get_by_email(db: Session, *, email: str) -> Optional[AdminUser]:
+    def get_by_email(db: Session, *, email: str) -> Optional[SysUser]:
         """
         通过email获取用户
         参数里面的* 表示 后面调用的时候 要用指定参数的方法调用
@@ -36,15 +36,15 @@ class CRUDUser(CRUDBase[AdminUser, user_schema.UserCreate, user_schema.UserUpdat
         :param email:
         :return:
         """
-        return db.query(AdminUser).filter(AdminUser.email == email).first()
+        return db.query(SysUser).filter(SysUser.email == email).first()
 
-    def create(self, db: Session, *, obj_in: user_schema.UserCreate) -> AdminUser:
-        db_obj = AdminUser(
+    def create(self, db: Session, *, obj_in: sys_user_schema.UserCreate) -> SysUser:
+        db_obj = SysUser(
             nickname=obj_in.nickname,
             email=obj_in.email,
             hashed_password=get_password_hash(obj_in.password),
             avatar=obj_in.avatar,
-            role_id=obj_in.role_id,
+            authority_id=obj_in.authority_id,
             is_active=obj_in.is_active
         )
         db.add(db_obj)
@@ -52,7 +52,7 @@ class CRUDUser(CRUDBase[AdminUser, user_schema.UserCreate, user_schema.UserUpdat
         db.refresh(db_obj)
         return db_obj
 
-    def authenticate(self, db: Session, *, email: str, password: str) -> Optional[AdminUser]:
+    def authenticate(self, db: Session, *, email: str, password: str) -> Optional[SysUser]:
         user = self.get_by_email(db, email=email)
         if not user:
             return None
@@ -61,8 +61,8 @@ class CRUDUser(CRUDBase[AdminUser, user_schema.UserCreate, user_schema.UserUpdat
         return user
 
     @staticmethod
-    def is_active(user: AdminUser) -> bool:
+    def is_active(user: SysUser) -> bool:
         return user.is_active == 1
 
 
-curd_user = CRUDUser(AdminUser)
+curd_user = CRUDUser(SysUser)
