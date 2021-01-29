@@ -24,6 +24,8 @@ act = "read"  # the operation that the user performs on the resource.
 
 # 添加
 # e.add_policy("alice", "data1", "read")
+# e.remove_policy("nick", "data1", "read")
+
 
 if e.enforce(sub, obj, act):
     # permit alice to read data1casbin_sqlalchemy_adapter
