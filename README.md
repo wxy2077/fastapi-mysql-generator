@@ -10,7 +10,7 @@
 
 https://github.com/tiangolo/full-stack-fastapi-postgresql
 
-我把它改成了自己喜欢的格式。
+我把它改成了自己喜欢的格式。很大程度参考了[奇淼 gin-vue-admin项目](https://github.com/flipped-aurora/gin-vue-admin)
 
 ![demo](images/demo1.png)
 
@@ -22,7 +22,11 @@ https://github.com/tiangolo/full-stack-fastapi-postgresql
 - redis使用演示.
 - 文件上传演示.
 - apscheduler 定时任务 (不保证稳定 noqa)
-- aiocache 装饰器缓存(未实现) https://github.com/tiangolo/fastapi/issues/651
+- 基于 casbin 的权限验证 (基于 gin-vue-admin 复刻)
+
+## TODO
+- [ ] 异步ORM tortoise-orm  https://tortoise-orm.readthedocs.io/en/latest/examples/fastapi.html 
+- [ ] aiocache 装饰器缓存(未实现) https://github.com/tiangolo/fastapi/issues/651
 
 ## 学习博客
 
