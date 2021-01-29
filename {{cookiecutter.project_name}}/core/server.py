@@ -16,14 +16,17 @@ import traceback
 from fastapi import FastAPI, Request, Response
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError, ValidationError
-from aioredis import create_redis_pool
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
+# from aioredis import create_redis_pool
+# from apscheduler.schedulers.asyncio import AsyncIOScheduler
+# from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 
 from router.v1_router import api_v1_router
 from core.config import settings
 from common.logger import logger
-from common import custom_exc, response_code
+from common import custom_exc
+from common.sys_schedule import schedule
+from db.sys_redis import redis_client
+from schemas.response import response_code
 
 
 def create_app() -> FastAPI:
@@ -55,10 +58,11 @@ def create_app() -> FastAPI:
     register_hook(app)
 
     # 挂载redis
-    register_redis(app)
-
+    # register_redis(app)
     # 注册任务调度
-    register_scheduler(app)
+    # register_scheduler(app)
+    # 取消挂载在 request对象上面的操作，感觉特别麻烦，直接使用全局的
+    register_init(app)
 
     if settings.DEBUG:
         # 注册静态文件
@@ -93,6 +97,11 @@ def register_router(app: FastAPI) -> None:
     app.include_router(
         api_v1_router,
     )
+
+    if settings.DEBUG:
+        # 输出v1所有的路由
+        for route in api_v1_router.routes:
+            print({'path': route.path, 'name': route.name, 'methods': route.methods})
 
 
 def register_cors(app: FastAPI) -> None:
@@ -151,6 +160,19 @@ def register_exception(app: FastAPI) -> None:
 
         return response_code.resp_4003(message=exc.err_desc)
 
+        # 自定义异常 捕获
+
+    @app.exception_handler(custom_exc.AuthenticationError)
+    async def user_not_found_exception_handler(request: Request, exc: custom_exc.AuthenticationError):
+        """
+        用户权限不足
+        :param request:
+        :param exc:
+        :return:
+        """
+        logger.error(f"用户权限不足 \nURL:{request.method}{request.url}")
+        return response_code.resp_4003(message=exc.err_desc)
+
     @app.exception_handler(ValidationError)
     async def inner_validation_exception_handler(request: Request, exc: ValidationError):
         """
@@ -205,48 +227,47 @@ def register_hook(app: FastAPI) -> None:
         return response
 
 
-def register_redis(app: FastAPI) -> None:
+# def register_scheduler(app: FastAPI) -> None:
+#     """
+#     注册任务调度对象
+#     :param app:
+#     :return:
+#     """
+#
+#     @app.on_event("startup")
+#     async def load_schedule_or_create_blank():
+#         # 存放在本地sqlite文件中 持续化
+#         job_stores = {
+#             'default': SQLAlchemyJobStore(url='sqlite:///jobs.sqlite')
+#         }
+#         schedule = AsyncIOScheduler(jobstores=job_stores)
+#         schedule.start()
+#         app.state.schedule = schedule
+#         logger.info("Created Schedule Object")
+#
+#     @app.on_event('shutdown')
+#     async def shutdown_schedule():
+#         """
+#         关闭
+#         :return:
+#         """
+#         app.state.schedule.shutdown()
+
+
+def register_init(app: FastAPI) -> None:
     """
-    把redis挂载到app对象上面
-    :param app:
-    :return:
-    """
-
-    @app.on_event('startup')
-    async def startup_event():
-        """
-        获取链接
-        :return:
-        """
-        app.state.redis = await create_redis_pool(settings.REDIS_URL)
-
-    @app.on_event('shutdown')
-    async def shutdown_event():
-        """
-        关闭
-        :return:
-        """
-        app.state.redis.close()
-        await app.state.redis.wait_closed()
-
-
-def register_scheduler(app: FastAPI) -> None:
-    """
-    注册任务调度对象
+    初始化连接
     :param app:
     :return:
     """
 
     @app.on_event("startup")
-    async def load_schedule_or_create_blank():
-        # 存放在本地sqlite文件中 持续化
-        job_stores = {
-            'default': SQLAlchemyJobStore(url='sqlite:///jobs.sqlite')
-        }
-        schedule = AsyncIOScheduler(jobstores=job_stores)
-        schedule.start()
-        app.state.schedule = schedule
-        logger.info("Created Schedule Object")
+    async def init_connect():
+        # 连接redis
+        redis_client.init_redis_connect()
+
+        # 初始化 apscheduler
+        schedule.init_scheduler()
 
     @app.on_event('shutdown')
     async def shutdown_schedule():
@@ -254,4 +275,5 @@ def register_scheduler(app: FastAPI) -> None:
         关闭
         :return:
         """
-        app.state.schedule.shutdown()
+        schedule.shutdown()
+
