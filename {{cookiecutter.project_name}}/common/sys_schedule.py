@@ -20,7 +20,7 @@ from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 class ScheduleCli(object):
 
     def __init__(self):
-        # redis对象 在 @app.on_event("startup") 中连接创建
+        # 对象 在 @app.on_event("startup") 中初始化
         self._schedule = None
 
     def init_scheduler(self) -> None:

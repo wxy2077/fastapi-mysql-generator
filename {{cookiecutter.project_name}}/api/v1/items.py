@@ -19,7 +19,7 @@ from tempfile import NamedTemporaryFile
 
 from sqlalchemy.orm import Session
 from sqlalchemy import text
-from fastapi import APIRouter, Depends, Request, File, UploadFile, Query
+from fastapi import APIRouter, Depends, File, UploadFile, Query
 
 from service.sys_user import curd_user
 from common import deps
@@ -32,23 +32,17 @@ router = APIRouter()
 
 @router.get("/test", summary="用户登录认证", name="测试接口")
 async def items_test(
-        request: Request,
         *,
         bar: str = Query(..., title="测试字段", description="测试字段描述"),
         db: Session = Depends(deps.get_db),
 ) -> Any:
     """
     用户登录
-    :param request:
     :param bar:
     :param db:
     :return:
     """
-    # 挂载在request对象上 着实不方便
-    # await request.app.state.redis.set("test_items", bar, expire=30)
-    # # 等待 redis读取
-    # redis_test = await request.app.state.redis.get("test_items")
-
+    # 测试redis使用
     redis_client.set("test_items", bar, ex=60)
     redis_test = redis_client.get("test_items")
 

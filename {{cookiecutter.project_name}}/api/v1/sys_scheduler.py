@@ -13,7 +13,7 @@
 
 from datetime import datetime
 
-from fastapi import APIRouter, Request, Query, Body
+from fastapi import APIRouter, Query, Body
 
 from common.sys_schedule import schedule
 from schemas.response import response_code
@@ -73,12 +73,12 @@ async def add_job_to_scheduler(
         return response_code.resp_4001(message=f"{job_id} job already exists")
 
     schedule_job = schedule.add_job(demo_task,
-                                                      'interval',
-                                                      args=(job_id,),
-                                                      seconds=seconds,  # 循环间隔时间 秒
-                                                      id=job_id,  # job ID
-                                                      next_run_time=datetime.now()  # 立即执行
-                                                      )
+                                    'interval',
+                                    args=(job_id,),
+                                    seconds=seconds,  # 循环间隔时间 秒
+                                    id=job_id,  # job ID
+                                    next_run_time=datetime.now()  # 立即执行
+                                    )
     return response_code.resp_200(data={"id": schedule_job.id})
 
 

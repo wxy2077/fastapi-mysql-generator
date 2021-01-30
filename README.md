@@ -6,9 +6,7 @@
 [中文说明](./README.md) | [English](./README-en.md)
 
 ## 简介
-使用FastAPI + MySql 作为数据库的项目生成器, 我是参考FastAPI作者[tiangolo](https://github.com/tiangolo)的full-stack-fastapi-postgresql项目做的。
-
-https://github.com/tiangolo/full-stack-fastapi-postgresql
+使用FastAPI + MySql 作为数据库的项目生成器, 我是参考FastAPI作者[tiangolo](https://github.com/tiangolo)的 [full-stack-fastapi-postgresql](https://github.com/tiangolo/full-stack-fastapi-postgresql) 项目做的。
 
 我把它改成了自己喜欢的格式。很大程度参考了[奇淼 gin-vue-admin项目](https://github.com/flipped-aurora/gin-vue-admin)
 
@@ -22,7 +20,7 @@ https://github.com/tiangolo/full-stack-fastapi-postgresql
 - redis使用演示.
 - 文件上传演示.
 - apscheduler 定时任务 (不保证稳定 noqa)
-- 基于 casbin 的权限验证 (基于 gin-vue-admin 复刻)
+- 基于 casbin 的权限验证 (基于 [gin-vue-admin](https://github.com/flipped-aurora/gin-vue-admin) 复刻)
 
 ## TODO
 - [ ] 异步ORM tortoise-orm  https://tortoise-orm.readthedocs.io/en/latest/examples/fastapi.html 
@@ -65,17 +63,19 @@ https://github.com/tiangolo/full-stack-fastapi-postgresql
 
 |____api                         // API文件夹
 | |____v1                        // 版本区分
+| | | |____items.py              // 一些接口示例
+| | | |____sys_api.py            // API操作 用于权限管理
+| | | |____sys_casbin.py         // 添加指定角色权限
 | | | |____sys_scheduler.py      // 定时任务调度模块
 | | | |____sys_user.py           // user 模块
-| | | |____items.py              // 一些接口示例
 
 | |____common                    // 项目通用文件夹
 | | |______init__.py             // 导出日志文件方便导入
-| | |____curd_base.py            // curd通用基础操作对象
 | | |____custom_exc.py           // 自定义异常
 | | |____deps.py                 // 通用依赖文件,如数据库操作对象,权限验证对象
 | | |____logger.py               // 扩展日志 loguru 简单配置
-| | |____response_code.py        // 响应状态码
+| | |____sys_casbin.py           // 生成 casbin
+| | |____sys_scheduler.py        // 定义 apscheduler 在core/server 下初始化
 
 |____core                        
 | |____config                    // 配置文件
@@ -84,25 +84,32 @@ https://github.com/tiangolo/full-stack-fastapi-postgresql
 | | |____production_config.py    // 生产配置
 | |____celery_app.py             // celery (目前没有使用)
 | |____security.py               // token password验证  
-| |____server.py                 // 核心服务文件(重要) 
+| |____server.py                 // 核心服务文件(重要) 初始化连接等操作
         
 | |____db                        // 数据库
 | | |____base.py                 // 导出全部models 给alembic迁移用
 | | |____base_class.py           // orm model 基类
 | | |____session.py              // 链接数据库会话
+| | |____sys_redis.py            // 生成redis对象
 
 |____logs/                       // 日志文件夹
 
-| |____models                    // orm models 在这里面新增
-| | |____auth.py                 // 用户模块orm (记得导入到 /db/base.py 下面才会迁移成功)
+| |____models                    // orm models 在这里面新增 (记得导入到 /db/base.py 下面才会迁移成功)
+| | |____sys_api.py              // 项目API model
+| | |____sys_auth.py             // 用户模块orm
          
+| |____resource                  // 存放casbin model
+| | |____rbac_model.conf         // casbin model匹配规则
+
 | |____router                    // 路由模块
 | | |____v1_router.py            // V1 API分组路由文件(可在这里按照分组添加权限验证)
 
-| |____schemas                   // 请求 或者 响应的 Pydantic model(作者目前也写了一个 pydantic-sqlalchemy 互转的库 https://github.com/tiangolo/pydantic-sqlalchemy 但是感觉不太完善)
-| | |____user_schema.py          // 用户模块请求model验证
+| |____schemas                   // 请求 或者 响应的 Pydantic model(这里的schemas和model应该整合到一起 作者目前也写了一个 pydantic-sqlalchemy 互转的库 https://github.com/tiangolo/pydantic-sqlalchemy 但是感觉不太完善)
+| | |____request                 // 数据验证 model 
+| | |____response                // 数据响应 model(我项目里面暂时没有写响应model) 
 
 | |____service                   // ORM 操作文件夹
+| | |____curd_base.py            // curd通用基础操作对象
 | | |____sys_user.py             // user curd操作
 
 |____static/                     // 静态资源文件(测试时使用，生产建议使用nginx静态资源服务器或者七牛云)
@@ -115,7 +122,7 @@ https://github.com/tiangolo/full-stack-fastapi-postgresql
 
 |____jobs.sqlite                 // 定时任务持久化sqlite 也可以使用其他的比如redis
 |____main.py                     // 启动文件
-|____create_user.py              // 生成初始化用户
+|____init_db.py                  // 生成初始化角色和用户
 |____requirements.txt            // 依赖文件
 
 ```
@@ -143,7 +150,7 @@ pip install --upgrade -r requirements-dev.txt
 
 在这个文件下 `project/app/core/config/development_config.py` 或者 `production_config.py`。
 
-配置MySql和Redis信息(如果不需要redis可以去掉，然后在`/app/api/__init__.py`文件下注释`register_redis`函数)
+配置MySql和Redis信息
 
 ## 迁移数据库
 
@@ -177,10 +184,11 @@ sys.path.insert(0, BASE_DIR)
 </details>
 
 ## 创建用户
-
+> 会默认创建两个角色一个为超级管理缘角色，一个为普通角色，
+超级管理员拥有目前接口的所有调用权限，普通用户只能登录和获取自身用户信息.
 ```
-cd your_project/app
-python create_user.py
+cd your_project/
+python init_db.py
 ```
 
 ## 运行启动
@@ -189,11 +197,11 @@ python create_user.py
 # 进入项目文件夹下
 cd your_project/
 
-# 直接运行main文件
-python main.py
-
-# 或者 命令行运行(开发模式)
+# 命令行运行(开发模式)
 uvicorn main:app --host=127.0.0.1 --port=8010 --reload
+
+# 直接运行main文件(会打印两次路由)
+python main.py
 ```
 
 <details>
@@ -211,7 +219,7 @@ https://stackoverflow.com/questions/30461982/how-to-provide-make-directory-as-so
 ```
 </details>
 
-在线文档地址
+在线文档地址(在配置文件里面设置路径或者关闭)
 ```
 http://127.0.0.1:8010/api/docs
 ```

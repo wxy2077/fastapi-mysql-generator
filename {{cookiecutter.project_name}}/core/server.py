@@ -8,7 +8,11 @@
 # @Email   : wg_python@163.com
 # @Desc    :
 """
+包导入的时候最好遵循包导入顺序原则
 
+标准库
+第三方库
+项目自定义
 """
 
 import traceback
@@ -16,9 +20,6 @@ import traceback
 from fastapi import FastAPI, Request, Response
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError, ValidationError
-# from aioredis import create_redis_pool
-# from apscheduler.schedulers.asyncio import AsyncIOScheduler
-# from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 
 from router.v1_router import api_v1_router
 from core.config import settings
@@ -57,10 +58,6 @@ def create_app() -> FastAPI:
     # 请求拦截
     register_hook(app)
 
-    # 挂载redis
-    # register_redis(app)
-    # 注册任务调度
-    # register_scheduler(app)
     # 取消挂载在 request对象上面的操作，感觉特别麻烦，直接使用全局的
     register_init(app)
 
@@ -89,7 +86,6 @@ def register_static_file(app: FastAPI) -> None:
 def register_router(app: FastAPI) -> None:
     """
     注册路由
-    这里暂时把两个API服务写到一起，后面在拆分
     :param app:
     :return:
     """
@@ -160,8 +156,6 @@ def register_exception(app: FastAPI) -> None:
 
         return response_code.resp_4003(message=exc.err_desc)
 
-        # 自定义异常 捕获
-
     @app.exception_handler(custom_exc.AuthenticationError)
     async def user_not_found_exception_handler(request: Request, exc: custom_exc.AuthenticationError):
         """
@@ -195,8 +189,8 @@ def register_exception(app: FastAPI) -> None:
         """
         logger.error(
             f"请求参数格式错误\nURL:{request.method}{request.url}\nHeaders:{request.headers}\n{traceback.format_exc()}")
-        # return response_code.resp_4001(message=exc.errors())
-        return response_code.resp_4001(message='; '.join([f"{e['loc'][1]}: {e['msg']}" for e in exc.errors()]))
+        # return response_code.resp_4001(message='; '.join([f"{e['loc'][1]}: {e['msg']}" for e in exc.errors()]))
+        return response_code.resp_4001(message=exc.errors())
 
     # 捕获全部异常
     @app.exception_handler(Exception)
@@ -227,33 +221,6 @@ def register_hook(app: FastAPI) -> None:
         return response
 
 
-# def register_scheduler(app: FastAPI) -> None:
-#     """
-#     注册任务调度对象
-#     :param app:
-#     :return:
-#     """
-#
-#     @app.on_event("startup")
-#     async def load_schedule_or_create_blank():
-#         # 存放在本地sqlite文件中 持续化
-#         job_stores = {
-#             'default': SQLAlchemyJobStore(url='sqlite:///jobs.sqlite')
-#         }
-#         schedule = AsyncIOScheduler(jobstores=job_stores)
-#         schedule.start()
-#         app.state.schedule = schedule
-#         logger.info("Created Schedule Object")
-#
-#     @app.on_event('shutdown')
-#     async def shutdown_schedule():
-#         """
-#         关闭
-#         :return:
-#         """
-#         app.state.schedule.shutdown()
-
-
 def register_init(app: FastAPI) -> None:
     """
     初始化连接
@@ -270,7 +237,7 @@ def register_init(app: FastAPI) -> None:
         schedule.init_scheduler()
 
     @app.on_event('shutdown')
-    async def shutdown_schedule():
+    async def shutdown_connect():
         """
         关闭
         :return:

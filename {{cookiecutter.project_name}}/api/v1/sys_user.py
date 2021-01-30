@@ -18,13 +18,11 @@ from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 
 from core import security
-from common import logger
-from common import deps
-from schemas.response import response_code
 from models import sys_auth
+from common import deps, logger
 from core.config import settings
-
 from schemas.request import sys_user_schema
+from schemas.response import response_code
 from service.sys_user import curd_user
 
 router = APIRouter()

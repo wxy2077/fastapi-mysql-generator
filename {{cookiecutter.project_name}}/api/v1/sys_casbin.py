@@ -37,7 +37,7 @@ async def add_authority(
         return response_code.resp_4001(message="添加失败，权限已存在")
 
 
-@router.post("/del/auth")
+@router.post("/del/auth", summary="删除访问权限")
 async def del_authority(
         authority_info: AuthCreate
 ):
