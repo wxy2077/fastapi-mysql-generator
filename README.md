@@ -150,7 +150,7 @@ pip install --upgrade -r requirements-dev.txt
 
 在这个文件下 `project/app/core/config/development_config.py` 或者 `production_config.py`。
 
-配置MySql和Redis信息
+配置MySQL和Redis信息
 
 ## 迁移数据库
 
