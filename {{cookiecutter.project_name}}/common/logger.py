@@ -20,11 +20,10 @@ https://github.com/tiangolo/fastapi/issues/81#issuecomment-473677039
 import os
 import time
 from loguru import logger
-
-basedir = os.path.dirname(os.path.dirname((os.path.abspath(__file__))))
+from core.config import settings
 
 # 定位到log日志文件
-log_path = os.path.join(basedir, 'logs')
+log_path = os.path.join(settings.BASE_PATH, 'logs')
 
 if not os.path.exists(log_path):
     os.mkdir(log_path)

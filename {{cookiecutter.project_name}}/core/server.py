@@ -94,11 +94,6 @@ def register_router(app: FastAPI) -> None:
         api_v1_router,
     )
 
-    if settings.DEBUG:
-        # 输出v1所有的路由
-        for route in api_v1_router.routes:
-            print({'path': route.path, 'name': route.name, 'methods': route.methods})
-
 
 def register_cors(app: FastAPI) -> None:
     """
