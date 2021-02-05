@@ -23,6 +23,7 @@
 - 基于 casbin 的权限验证 (基于 [gin-vue-admin](https://github.com/flipped-aurora/gin-vue-admin) 复刻)
 
 ## TODO
+- [ ] WebSocket 简单使用 ([个人练习的一个小demo](https://github.com/CoderCharm/chat))
 - [ ] 异步ORM tortoise-orm  https://tortoise-orm.readthedocs.io/en/latest/examples/fastapi.html 
 - [ ] aiocache 装饰器缓存(未实现) https://github.com/tiangolo/fastapi/issues/651
 
@@ -33,15 +34,15 @@
 
 - [【FastAPI 学习 一】配置文件](https://www.cnblogs.com/CharmCode/p/14191077.html)
 - [【FastAPI 学习 二】SqlAlchemy Model模型类](https://www.cnblogs.com/CharmCode/p/14191082.html)
-- [【FastAPI 学习 三】 FastAPI SqlAlchemy MySql表迁移](https://www.cnblogs.com/CharmCode/p/14191090.html)
-- [【FastAPI 学习 四】 日志配置](https://www.cnblogs.com/CharmCode/p/14191091.html)
+- [【FastAPI 学习 三】FastAPI SqlAlchemy MySql表迁移](https://www.cnblogs.com/CharmCode/p/14191090.html)
+- [【FastAPI 学习 四】日志配置](https://www.cnblogs.com/CharmCode/p/14191091.html)
 - [【FastAPI 学习 五】统一响应json数据格式](https://www.cnblogs.com/CharmCode/p/14191093.html)
 - [【FastAPI 学习 六】异常处理](https://www.cnblogs.com/CharmCode/p/14191103.html)
 - [【FastAPI 学习 七】GET和POST请求参数接收以及验证](https://www.cnblogs.com/CharmCode/p/14191108.html)
 - [【FastAPI 学习 八】JWT token认证登陆](https://www.cnblogs.com/CharmCode/p/14191112.html)
 - [【FastAPI 学习 九】图片文件上传](https://www.cnblogs.com/CharmCode/p/14191116.html)
 - [【FastAPI 学习 十】使用Redis](https://www.cnblogs.com/CharmCode/p/14191119.html)
-- [【FastAPI 学习 十一】 项目目录结构demo(自己改版)](https://www.cnblogs.com/CharmCode/p/14191126.html)
+- [【FastAPI 学习 十一】项目目录结构demo(自己改版)](https://www.cnblogs.com/CharmCode/p/14191126.html)
 - [【FastAPI 学习 十二】定时任务篇](https://www.cnblogs.com/CharmCode/p/14191009.html)
 
 </details>
@@ -184,7 +185,7 @@ sys.path.insert(0, BASE_DIR)
 </details>
 
 ## 创建用户
-> 会默认创建两个角色一个为超级管理缘角色，一个为普通角色，
+> 会默认创建两个角色一个为超级管理员角色，一个为普通角色，
 超级管理员拥有目前接口的所有调用权限，普通用户只能登录和获取自身用户信息.
 ```
 cd your_project/
@@ -231,15 +232,10 @@ http://127.0.0.1:8010/api/docs
 ```shell
 pip install pytest
 ```
-> 手动创建一个测试用户(直接python create_user.py)
-
-```
-账号: test@test.com
-密码: test 
-```
 
 在项目下 启动测试用例
 ```
+cd your_project/
 pytest
 ```
 

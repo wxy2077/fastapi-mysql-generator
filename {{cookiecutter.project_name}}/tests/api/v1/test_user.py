@@ -12,21 +12,11 @@
 pip install pytest
 
 """
-import os
-import sys
-
-# 解决包导入问题
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from fastapi.testclient import TestClient
-from core.server import create_app
-
-app = create_app()
-
-client = TestClient(app)
 
 
-def test_login():
+def test_login(client: TestClient) -> None:
     """
     测试登录
     自行使用 /app/create_user.py 创建任意测试用户
@@ -43,7 +33,7 @@ def test_login():
     assert response.json()["data"]["token"]
 
 
-def test_get_user():
+def test_get_user(client: TestClient):
     """
     测试获取用户信息的接口
     :return:
