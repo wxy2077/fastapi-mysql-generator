@@ -17,7 +17,7 @@ from db.base_class import Base
 
 class SysApi(Base):
     """
-    用户表
+    API表
     """
     path = Column(VARCHAR(128), comment="API路径")
     description = Column(VARCHAR(64), comment="API描述")

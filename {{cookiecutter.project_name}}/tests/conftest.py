@@ -57,7 +57,7 @@ def job_id() -> str:
 @pytest.fixture(scope="module")
 def superuser_token_headers(client: TestClient) -> dict:
     """
-    暂时使用的 admin 用户测试， 后续新增 一份测试环境
+    管理员 admin 用户测试， 后续新增 一份测试环境
     :param client:
     :return:
     """
@@ -65,4 +65,18 @@ def superuser_token_headers(client: TestClient) -> dict:
         client=client,
         email="admin@admin.com",
         password="admin"
+    )
+
+
+@pytest.fixture(scope="module")
+def ordinary_token_headers(client: TestClient) -> dict:
+    """
+    普通用户
+    :param client:
+    :return:
+    """
+    return user_authentication_headers(
+        client=client,
+        email="test@test.com",
+        password="test"
     )

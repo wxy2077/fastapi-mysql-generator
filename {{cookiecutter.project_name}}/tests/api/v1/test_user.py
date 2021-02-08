@@ -33,20 +33,27 @@ def test_login(client: TestClient) -> None:
     assert response.json()["data"]["token"]
 
 
-def test_get_user(client: TestClient):
+def test_error_login(client: TestClient) -> None:
+    """
+    测试错误密码是否能登录
+    test@test.com
+    test
+    :return:
+    """
+    response = client.post("/admin/auth/login/access-token", json={
+        "username": "test1@test.com",
+        "password": "t"
+    })
+    assert response.status_code == 200
+    assert response.json()["code"] == 4003
+
+
+def test_get_user(client: TestClient, ordinary_token_headers: dict):
     """
     测试获取用户信息的接口
     :return:
     """
-    response = client.post("/admin/auth/login/access-token", json={
-        "username": "test@test.com",
-        "password": "test"
-    })
-    token = response.json()["data"]["token"]
-
-    response = client.get("/admin/auth/user/info", headers={
-        "token": token
-    })
+    response = client.get("/admin/auth/user/info", headers=ordinary_token_headers)
 
     assert response.status_code == 200
     assert response.json()["code"] == 200

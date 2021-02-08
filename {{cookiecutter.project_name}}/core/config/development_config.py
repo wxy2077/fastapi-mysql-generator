@@ -45,7 +45,7 @@ class Settings(BaseSettings):
     MYSQL_USERNAME: str = "root"
     MYSQL_PASSWORD: str = "Admin12345-"
     MYSQL_HOST: Union[AnyHttpUrl, IPvAnyAddress] = "172.16.137.129"
-    MYSQL_POET: int = 3306
+    MYSQL_PORT: int = 3306
     MYSQL_DATABASE: str = 'temp_db_date'
 
     # Mysql地址
