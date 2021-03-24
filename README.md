@@ -23,8 +23,10 @@
 - 基于 casbin 的权限验证 (基于 [gin-vue-admin](https://github.com/flipped-aurora/gin-vue-admin) 复刻)
 
 ## TODO
+> 由于我现在刚换工作，所以这些`TODO`可能要鸽一段时间了。
+
 - [ ] WebSocket 简单使用 ([个人练习的一个小demo](https://github.com/CoderCharm/chat))
-- [ ] 异步ORM tortoise-orm  https://tortoise-orm.readthedocs.io/en/latest/examples/fastapi.html 
+- [ ] 异步ORM databases  https://fastapi.tiangolo.com/advanced/async-sql-databases/
 - [ ] aiocache 装饰器缓存(未实现) https://github.com/tiangolo/fastapi/issues/651
 
 ## 学习博客
@@ -44,6 +46,7 @@
 - [【FastAPI 学习 十】使用Redis](https://www.cnblogs.com/CharmCode/p/14191119.html)
 - [【FastAPI 学习 十一】项目目录结构demo(自己改版)](https://www.cnblogs.com/CharmCode/p/14191126.html)
 - [【FastAPI 学习 十二】定时任务篇](https://www.cnblogs.com/CharmCode/p/14191009.html)
+- [【FastAPI 学习 十三】基于`casbin`的权限校验](https://www.cnblogs.com/CharmCode/p/14377547.html)
 
 </details>
 
@@ -237,6 +240,15 @@ pip install pytest
 ```
 cd your_project/
 pytest
+
+# 接口测试结果
+collected 10 items                                                                                                                             
+
+tests/api/v1/test_casbin.py ....                                                                                                         [ 40%]
+tests/api/v1/test_cron.py ...                                                                                                            [ 70%]
+tests/api/v1/test_user.py ...                                                                                                            [100%]
+
+============================================================== 10 passed in 1.77s ==============================================================
 ```
 
 
