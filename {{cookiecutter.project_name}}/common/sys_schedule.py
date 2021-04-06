@@ -48,8 +48,8 @@ class ScheduleCli(object):
         del self._schedule[name]
 
 
-# 创建schedule对象 但是这种方式使用方法时没有提示
-schedule = ScheduleCli()
+# 创建schedule对象
+schedule: AsyncIOScheduler = ScheduleCli()
 
 # 只允许导出 redis_client 实例化对象
 __all__ = ["schedule"]

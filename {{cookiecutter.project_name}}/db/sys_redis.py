@@ -19,7 +19,8 @@ redis 连接
 
 """
 import sys
-import redis
+from redis import Redis, AuthenticationError
+
 from common.logger import logger
 from core.config import settings
 
@@ -41,7 +42,7 @@ class RedisCli(object):
         :return:
         """
         try:
-            self._redis_client = redis.Redis(
+            self._redis_client = Redis(
                 host=self.host,
                 port=self.port,
                 password=self.password,
@@ -52,7 +53,7 @@ class RedisCli(object):
             if not self._redis_client.ping():
                 logger.info("连接redis超时")
                 sys.exit()
-        except (redis.AuthenticationError, Exception) as e:
+        except (AuthenticationError, Exception) as e:
             logger.info(f"连接redis异常 {e}")
             sys.exit()
 
@@ -71,7 +72,7 @@ class RedisCli(object):
 
 
 # 创建redis连接对象 但是这种方式使用方法时没有提示
-redis_client = RedisCli(
+redis_client: Redis = RedisCli(
     host=settings.REDIS_HOST,
     port=settings.REDIS_PORT,
     password=settings.REDIS_PASSWORD,
