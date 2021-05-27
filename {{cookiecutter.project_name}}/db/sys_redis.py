@@ -47,7 +47,7 @@ class RedisCli(object):
                 port=self.port,
                 password=self.password,
                 db=self.db,
-                socket_timeout=5,
+                socket_timeout=self.socket_timeout,
                 decode_responses=True  # 解码
             )
             if not self._redis_client.ping():
@@ -71,12 +71,13 @@ class RedisCli(object):
         del self._redis_client[name]
 
 
-# 创建redis连接对象 但是这种方式使用方法时没有提示
+# 创建redis连接对象
 redis_client: Redis = RedisCli(
     host=settings.REDIS_HOST,
     port=settings.REDIS_PORT,
     password=settings.REDIS_PASSWORD,
-    db=settings.REDIS_DB
+    db=settings.REDIS_DB,
+    socket_timeout=settings.REDIS_TIMEOUT
 )
 
 # 只允许导出 redis_client 实例化对象
