@@ -43,7 +43,7 @@ py==1.10.0
 pyasn1==0.4.8
 pycparser==2.20
 pydantic==1.5.1
-PyMySQL==0.9.3
+PyMySQL==1.0.2
 pyparsing==2.4.7
 pytest==6.2.1
 python-dateutil==2.8.1
@@ -55,13 +55,13 @@ pytz==2020.1
 requests==2.24.0
 rsa==4.6
 six==1.15.0
-SQLAlchemy==1.3.22
+SQLAlchemy==1.4.6
 starlette==0.13.6
 text-unidecode==1.3
 toml==0.10.2
 tzlocal==2.1
 urllib3==1.25.10
-uvicorn==0.13.3
+uvicorn==0.13.4
 uvloop==0.14.0
 vine==5.0.0
 wcwidth==0.2.5
