@@ -24,7 +24,7 @@ from core.config import settings
 def get_casbin() -> casbin.Enforcer:
     adapter = casbin_sqlalchemy_adapter.Adapter(engine)
 
-    e = casbin.Enforcer(settings.CASBIN_MODEL_PATH, adapter, True)
+    e = casbin.Enforcer(settings.CASBIN_MODEL_PATH, adapter)
     # e.add_function("ParamsMatch", params_match_func)
 
     return e
