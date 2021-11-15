@@ -1,12 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 2021/1/27 19:54
-# @Author  : CoderCharm
-# @File    : simple_example.py
-# @Software: PyCharm
-# @Github  : github/CoderCharm
-# @Email   : wg_python@163.com
-# @Desc    :
 """
 
 主要参考官方readme

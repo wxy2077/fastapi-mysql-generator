@@ -1,12 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 2021/1/28 19:40
-# @Author  : CoderCharm
-# @File    : sys_authority_schema.py
-# @Software: PyCharm
-# @Github  : github/CoderCharm
-# @Email   : wg_python@163.com
-# @Desc    :
 """
 
 角色的校验规则

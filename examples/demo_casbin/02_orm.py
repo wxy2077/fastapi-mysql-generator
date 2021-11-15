@@ -1,12 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 2021/1/27 20:06
-# @Author  : CoderCharm
-# @File    : casbin_orm.py
-# @Software: PyCharm
-# @Github  : github/CoderCharm
-# @Email   : wg_python@163.com
-# @Desc    :
 """
 https://github.com/pycasbin/sqlalchemy-adapter/blob/master/README.md
 

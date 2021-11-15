@@ -1,12 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 2020/10/15 16:24
-# @Author  : CoderCharm
-# @File    : server.py.py
-# @Software: PyCharm
-# @Github  : github/CoderCharm
-# @Email   : wg_python@163.com
-# @Desc    :
 """
 包导入的时候最好遵循包导入顺序原则
 

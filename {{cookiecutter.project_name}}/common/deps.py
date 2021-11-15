@@ -1,12 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 2020/10/16 11:51
-# @Author  : CoderCharm
-# @File    : deps.py
-# @Software: PyCharm
-# @Github  : github/CoderCharm
-# @Email   : wg_python@163.com
-# @Desc    :
 """
 
 一些通用的依赖功能
@@ -24,7 +15,9 @@ from common import custom_exc, sys_casbin
 from models.sys_auth import SysUser
 from core.config import settings
 from service.sys_user import curd_user
+from fastapi.security import OAuth2PasswordBearer
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="access-token")
 
 def get_db() -> Generator:
     """
@@ -39,7 +32,8 @@ def get_db() -> Generator:
 
 
 def check_jwt_token(
-        token: Optional[str] = Header(..., description="登录token")
+        # token: Optional[str] = Header(..., description="登录token")
+        token: Optional[str] = Depends(oauth2_scheme)
 ) -> Union[str, Any]:
     """
     解析验证token  默认验证headers里面为token字段的数据

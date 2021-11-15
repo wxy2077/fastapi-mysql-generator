@@ -1,12 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 2020/9/22 13:23
-# @Author  : CoderCharm
-# @File    : development_config.py
-# @Software: PyCharm
-# @Github  : github/CoderCharm
-# @Email   : wg_python@163.com
-# @Desc    :
 """
 开发环境配置
 """
@@ -22,7 +13,7 @@ class Settings(BaseSettings):
     DEBUG: bool = True
     # 项目文档
     TITLE: str = "FastAPI+MySQL项目生成"
-    DESCRIPTION: str = "更多FastAPI知识，请关注我的个人网站 https://www.charmcode.cn/"
+    DESCRIPTION: str = "FastAPI"
     # 文档地址 默认为docs
     DOCS_URL: str = "/api/docs"
     # 文档关联请求数据接口
@@ -44,16 +35,16 @@ class Settings(BaseSettings):
     # 配置你的Mysql环境
     MYSQL_USERNAME: str = "root"
     MYSQL_PASSWORD: str = "Admin12345-"
-    MYSQL_HOST: Union[AnyHttpUrl, IPvAnyAddress] = "172.16.137.129"
+    MYSQL_HOST: Union[AnyHttpUrl, IPvAnyAddress] = "127.0.0.1"
     MYSQL_PORT: int = 3306
     MYSQL_DATABASE: str = 'temp_db_date'
 
     # Mysql地址
-    SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{MYSQL_USERNAME}:{MYSQL_PASSWORD}@" \
-                              f"{MYSQL_HOST}/{MYSQL_DATABASE}?charset=utf8mb4"
+    SQLALCHEMY_DATABASE_URL = f"mysql+mysqlconnector://{MYSQL_USERNAME}:{MYSQL_PASSWORD}@" \
+                              f"{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DATABASE}?charset=utf8mb4"
 
     # redis配置
-    REDIS_HOST: str = "172.16.137.129"
+    REDIS_HOST: str = "127.0.0.1"
     REDIS_PASSWORD: str = "root12345"
     REDIS_DB: int = 0
     REDIS_PORT: int = 6379

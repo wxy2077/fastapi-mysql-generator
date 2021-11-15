@@ -1,12 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 2021/1/28 20:34
-# @Author  : CoderCharm
-# @File    : sys_redis.py
-# @Software: PyCharm
-# @Github  : github/CoderCharm
-# @Email   : wg_python@163.com
-# @Desc    :
 """
 
 通过class 实例化对象可以直接修改内部属性的特性

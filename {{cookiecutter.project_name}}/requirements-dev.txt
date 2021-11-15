@@ -10,3 +10,11 @@ passlib
 PyMySQL
 gunicorn
 databases[mysql]
+mysql-connector-python
+redis
+casbin
+casbin_sqlalchemy_adapter
+pydantic[email]
+python-multipart
+APScheduler
+bcrypt
