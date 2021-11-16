@@ -45,7 +45,7 @@ class Settings(BaseSettings):
 
     # redis配置
     REDIS_HOST: str = "127.0.0.1"
-    REDIS_PASSWORD: str = "root12345"
+    REDIS_PASSWORD: str = ""
     REDIS_DB: int = 0
     REDIS_PORT: int = 6379
     REDIS_URL: str = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}?encoding=utf-8"

@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     DEBUG: bool = False
     # 项目文档
     TITLE: str = "FastAPI+MySql项目生成"
-    DESCRIPTION: str = "更多FastAPI知识，请关注我的个人网站 https://www.charmcode.cn/"
+    DESCRIPTION: str = "FastAPI"
 
     # 文档地址 生产环境关闭 None
     DOCS_URL: Optional[str] = None

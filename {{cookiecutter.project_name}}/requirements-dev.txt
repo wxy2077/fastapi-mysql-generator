@@ -18,3 +18,4 @@ pydantic[email]
 python-multipart
 APScheduler
 bcrypt
+# cookiecutter

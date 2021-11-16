@@ -13,6 +13,7 @@ from fastapi import APIRouter, Depends
 from common.deps import check_authority
 
 from api.v1.sys_user import router as auth_router
+from api.v1.sys_token import router as token_router
 from api.v1.items import router as items_router
 from api.v1.sys_scheduler import router as scheduler_router
 from api.v1.sys_api import router as sys_api_router
@@ -21,7 +22,7 @@ from api.v1.sys_casbin import router as sys_casbin_router
 
 api_v1_router = APIRouter()
 api_v1_router.include_router(auth_router, prefix="/admin/auth", tags=["用户"])
-
+api_v1_router.include_router(token_router, prefix="/api", tags=["用户"])
 # api_v1_router.include_router(items_router, tags=["测试API"], dependencies=[Depends(check_jwt_token)])
 # check_authority 权限验证内部包含了 token 验证 如果不校验权限可直接 dependencies=[Depends(check_jwt_token)]
 api_v1_router.include_router(items_router, tags=["测试接口"], dependencies=[Depends(check_authority)])
