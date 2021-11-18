@@ -30,7 +30,7 @@ Go to the directory where you want to create your project and run:
 
 ```
 pip install cookiecutter
-cookiecutter https://github.com/CoderCharm/fastapi-mysql-generator
+cookiecutter https://github.com/youth1996/fastapi-mysql-generator
 
 cd your_project/
 pip install -r requirements.txt
