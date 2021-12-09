@@ -17,18 +17,11 @@
 读取不到则为开发环境，开发环境配置可以直接写在代码里面(或者配置ide环境变量)
 
 根据环境变量ENV是否有值 区分生产开发
+以上弃用
 
 """
 
 import os
 
-# 获取环境变量
-env = os.getenv("ENV", "")
-if env:
-    # 如果有虚拟环境 则是 生产环境
-    print("----------生产环境启动------------")
-    from .production_config import settings
-else:
-    # 没有则是开发环境
-    print("----------开发环境启动------------")
-    from .development_config import settings
+from .config import settings
+

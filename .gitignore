@@ -121,3 +121,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+*/*.yaml
+*/core/config/config.py

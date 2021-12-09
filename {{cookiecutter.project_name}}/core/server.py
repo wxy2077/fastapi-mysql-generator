@@ -26,8 +26,9 @@ from core.config import settings
 from common.logger import logger
 from common import custom_exc
 from common.sys_schedule import schedule
-from db.sys_redis import redis_client
-from schemas.response import response_code
+from common.sys_redis import redis_client
+from common.session import db
+from schemas.response import resp
 
 
 def create_app() -> FastAPI:
@@ -137,7 +138,7 @@ def register_exception(app: FastAPI) -> None:
         logger.error(
             f"token未知用户\nURL:{request.method}{request.url}\nHeaders:{request.headers}\n{traceback.format_exc()}")
 
-        return response_code.resp_4002(message=exc.err_desc)
+        return resp.fail(message=exc.err_desc)
 
     @app.exception_handler(custom_exc.TokenAuthError)
     async def user_token_exception_handler(request: Request, exc: custom_exc.TokenAuthError):
@@ -231,6 +232,8 @@ def register_init(app: FastAPI) -> None:
         # 初始化 apscheduler
         schedule.init_scheduler()
 
+        db.connect()
+
     @app.on_event('shutdown')
     async def shutdown_connect():
         """
@@ -238,4 +241,7 @@ def register_init(app: FastAPI) -> None:
         :return:
         """
         schedule.shutdown()
+
+        if not db.is_closed():
+            db.close()
 
