@@ -150,7 +150,7 @@ def register_exception(app: FastAPI) -> None:
         """
         logger.error(f"用户认证异常\nURL:{request.method}{request.url}\nHeaders:{request.headers}\n{traceback.format_exc()}")
 
-        return response_code.resp_4003(message=exc.err_desc)
+        return resp.fail(resp.DataNotFound.set_msg(exc.err_desc))
 
     @app.exception_handler(custom_exc.AuthenticationError)
     async def user_not_found_exception_handler(request: Request, exc: custom_exc.AuthenticationError):
@@ -161,7 +161,7 @@ def register_exception(app: FastAPI) -> None:
         :return:
         """
         logger.error(f"用户权限不足 \nURL:{request.method}{request.url}")
-        return response_code.resp_4003(message=exc.err_desc)
+        return resp.fail(resp.PermissionDenied)
 
     @app.exception_handler(ValidationError)
     async def inner_validation_exception_handler(request: Request, exc: ValidationError):
@@ -173,7 +173,7 @@ def register_exception(app: FastAPI) -> None:
         """
         logger.error(
             f"内部参数验证错误\nURL:{request.method}{request.url}\nHeaders:{request.headers}\n{traceback.format_exc()}")
-        return response_code.resp_5002(message=exc.errors())
+        return resp.fail(resp.BusinessError.set_msg(exc.errors()))
 
     @app.exception_handler(RequestValidationError)
     async def request_validation_exception_handler(request: Request, exc: RequestValidationError):
@@ -186,7 +186,7 @@ def register_exception(app: FastAPI) -> None:
         logger.error(
             f"请求参数格式错误\nURL:{request.method}{request.url}\nHeaders:{request.headers}\n{traceback.format_exc()}")
         # return response_code.resp_4001(message='; '.join([f"{e['loc'][1]}: {e['msg']}" for e in exc.errors()]))
-        return response_code.resp_4001(message=exc.errors())
+        return resp.fail(resp.InvalidParams.set_msg(exc.errors()))
 
     # 捕获全部异常
     @app.exception_handler(Exception)
@@ -198,7 +198,7 @@ def register_exception(app: FastAPI) -> None:
         :return:
         """
         logger.error(f"全局异常\n{request.method}URL:{request.url}\nHeaders:{request.headers}\n{traceback.format_exc()}")
-        return response_code.resp_500()
+        return resp.fail(resp.ServerError)
 
 
 def register_hook(app: FastAPI) -> None:

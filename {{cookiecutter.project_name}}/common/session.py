@@ -17,13 +17,13 @@ from peewee import _ConnectionState, Model, ModelSelect, SQL, DateTimeField
 from contextvars import ContextVar
 from playhouse.pool import PooledMySQLDatabase
 
-# from core.config import settings
+from core.config import settings
 
-# db_state_default = {"closed": None, "conn": None, "ctx": None, "transactions": None}
-db_state_default = {"closed": None, "conn": None, "ctx": None}
+db_state_default = {"closed": None, "conn": None, "ctx": None, "transactions": None}
 db_state = ContextVar("db_state", default=db_state_default.copy())
 
 
+# reference to https://fastapi.tiangolo.com/advanced/sql-databases-peewee/#context-variable-sub-dependency
 class PeeweeConnectionState(_ConnectionState):
     def __init__(self, **kwargs):
         super().__setattr__("_state", db_state)
@@ -37,13 +37,13 @@ class PeeweeConnectionState(_ConnectionState):
 
 
 db = PooledMySQLDatabase(
-    "fastapi",
+    settings.MYSQL_DATABASE,
     max_connections=8,
     stale_timeout=300,
-    user="root",
-    host="127.0.0.1",
-    password="123456",
-    port=3306
+    user=settings.MYSQL_USERNAME,
+    host=settings.MYSQL_HOST,
+    password=settings.MYSQL_PASSWORD,
+    port=settings.MYSQL_PORT
 )
 
 db._state = PeeweeConnectionState()
@@ -55,18 +55,16 @@ class BaseModel(Model):
     updated_at = DateTimeField(default=datetime.datetime.now())
 
     @classmethod
-    def public(cls):
+    def undelete(cls):
+        # for logic delete
         return cls.select().where(SQL("deleted_at is NULL"))
 
     class Meta:
         database = db
 
 
-def paginator(db: ModelSelect, page: int, page_size: int, order_by: str = "id ASC"):
-    """
-    分页
-    """
-    count = db.count()
+def paginator(query: ModelSelect, page: int, page_size: int, order_by: str = "id ASC"):
+    count = query.count()
     if page < 1:
         page = 1
 
@@ -81,11 +79,11 @@ def paginator(db: ModelSelect, page: int, page_size: int, order_by: str = "id AS
     else:
         offset = (page - 1) * page_size
 
-    db = db.offset(offset).limit(page_size).order_by(SQL(order_by))
+    query = query.offset(offset).limit(page_size).order_by(SQL(order_by))
 
     total_pages = math.ceil(count / page_size)
 
-    paginator = {
+    paginate = {
         "total_pages": total_pages,
         "count": count,
         "current_page": page,
@@ -93,5 +91,4 @@ def paginator(db: ModelSelect, page: int, page_size: int, order_by: str = "id AS
         "next_page": page if page == total_pages else page + 1
     }
 
-    return list(db.dicts()), paginator
-
+    return list(query.dicts()), paginate
