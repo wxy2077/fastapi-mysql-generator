@@ -35,7 +35,7 @@ class Settings(BaseSettings):
     # 配置你的Mysql环境
     MYSQL_USERNAME: str = "root"
     MYSQL_PASSWORD: str = "root"
-    MYSQL_HOST: Union[AnyHttpUrl, IPvAnyAddress] = "127.0.0.1"
+    MYSQL_HOST: str = "127.0.0.1"
     MYSQL_PORT: int = 3306
     MYSQL_DATABASE: str = 'fastapi'
 
