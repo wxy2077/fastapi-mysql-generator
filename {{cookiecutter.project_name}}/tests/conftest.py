@@ -16,7 +16,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from core.server import create_app
-from db.session import SessionLocal
+from common.session import SessionLocal
 from tests.utils.user import user_authentication_headers
 
 

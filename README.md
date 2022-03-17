@@ -22,12 +22,6 @@
 - apscheduler 定时任务 (不保证稳定 noqa)
 - 基于 casbin 的权限验证 (基于 [gin-vue-admin](https://github.com/flipped-aurora/gin-vue-admin) 复刻)
 
-## TODO
-> 由于我现在刚换工作，所以这些`TODO`可能要鸽一段时间了。
-
-- [ ] WebSocket 简单使用 ([个人练习的一个小demo](https://github.com/CoderCharm/chat))
-- [ ] 异步ORM databases  https://fastapi.tiangolo.com/advanced/async-sql-databases/
-- [ ] aiocache 装饰器缓存(未实现) https://github.com/tiangolo/fastapi/issues/651
 
 ## 学习博客
 
@@ -158,34 +152,16 @@ pip install --upgrade -r requirements-dev.txt
 
 ## 迁移数据库
 
-```
-# 进入项目下
-cd your_project/
-
-# 生成关系映射 (第二次生成映射记得修改提交注释 init commit)
-alembic revision --autogenerate -m "init commit"
-
-# 生成表 (注意初次生成表会删除其他的表 建议在一个空数据库测试)
-alembic upgrade head
-```
-
-<details>
-<summary>迁移由于项目路径可能失败</summary>
-
-```python
-
-# 在 alembic/env.py文件里面
-import os,sys
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-print(f"当前路径:{BASE_DIR}")
+> 放弃ORM自带的迁移功能，使用第三方工具 `sql-migrate`，更直观便于管理。可参考 [sql-migrate](https://github.com/rubenv/sql-migrate)
 
 
-sys.path.insert(0, BASE_DIR) 
-# 如果还不行，那就简单直接点 直接写固定
-# sys.path.insert(0, "/你的路径/you_project/") 
+`sql-migrate status -env=dev-mysql`
 
-```
-</details>
+`sql-migrate up -env=dev-mysql`
+
+`sql-migrate down -env=dev-mysql`
+
+
 
 ## 创建用户
 > 会默认创建两个角色一个为超级管理员角色，一个为普通角色，

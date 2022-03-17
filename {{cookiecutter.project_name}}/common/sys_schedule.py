@@ -9,6 +9,12 @@ from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 
 
 class ScheduleCli(object):
+    _instance = None
+
+    def __new__(cls, *args, **kw):
+        if cls._instance is None:
+            cls._instance = object.__new__(cls, *args, **kw)
+        return cls._instance
 
     def __init__(self):
         # 对象 在 @app.on_event("startup") 中初始化

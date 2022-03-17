@@ -7,7 +7,7 @@ from datetime import datetime
 from fastapi import APIRouter, Query, Body
 
 from common.sys_schedule import schedule
-from schemas.response import response_code
+from schemas.response import resp
 from utils.cron_task import demo_task
 
 router = APIRouter()
@@ -26,7 +26,7 @@ async def get_scheduled_syncs():
              "next_run": str(job.next_run_time)}
         )
 
-    return response_code.resp_200(data=schedules)
+    return resp.ok(data=schedules)
 
 
 @router.get("/jobs/once", summary="获取指定的job信息", name="获取指定定时任务")
@@ -36,9 +36,9 @@ async def get_target_sync(
     job = schedule.get_job(job_id=job_id)
 
     if not job:
-        return response_code.resp_4001(message=f"not found job {job_id}")
+        return resp.fail(resp.DataNotFound.set_msg(f"not found job {job_id}"))
 
-    return response_code.resp_200(
+    return resp.ok(
         data={"job_id": job.id, "func_name": job.func_ref, "func_args": job.args, "cron_model": str(job.trigger),
               "next_run": str(job.next_run_time)})
 
@@ -61,7 +61,7 @@ async def add_job_to_scheduler(
     """
     res = schedule.get_job(job_id=job_id)
     if res:
-        return response_code.resp_4001(message=f"{job_id} job already exists")
+        return resp.fail(resp.InvalidRequest.set_msg(f"{job_id} job already exists"))
 
     schedule_job = schedule.add_job(demo_task,
                                     'interval',
@@ -70,7 +70,7 @@ async def add_job_to_scheduler(
                                     id=job_id,  # job ID
                                     next_run_time=datetime.now()  # 立即执行
                                     )
-    return response_code.resp_200(data={"id": schedule_job.id})
+    return resp.ok(data={"id": schedule_job.id})
 
 
 @router.post("/job/del", summary="移除任务", name="删除定时任务")
@@ -79,8 +79,8 @@ async def remove_schedule(
 ):
     res = schedule.get_job(job_id=job_id)
     if not res:
-        return response_code.resp_4001(message=f"not found job {job_id}")
+        return resp.fail(resp.DataNotFound.set_msg(f"not found job {job_id}"))
 
     schedule.remove_job(job_id)
 
-    return response_code.resp_200()
+    return resp.ok()
