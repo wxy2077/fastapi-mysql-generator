@@ -6,7 +6,7 @@
 
 ```
 pip install cookiecutter
-cookiecutter https://github.com/youth1996/fastapi-mysql-generator
+cookiecutter https://github.com/youth1996/fastapi-mysql-generator-old
 
 cd your_project/
 # 安装依赖库
