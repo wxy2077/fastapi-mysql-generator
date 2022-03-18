@@ -1,7 +1,6 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# 业务逻辑多了就写在这里
-
+"""
+业务逻辑多了就写在这里
+"""
 from datetime import timedelta
 
 from models.users import User

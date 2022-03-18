@@ -1,6 +1,6 @@
 # FastAPI and MySQL - 项目生成器
 
-![Python版本](https://img.shields.io/badge/Python-3.7+-brightgreen.svg "版本号")
+![Python版本](https://img.shields.io/badge/Python-3.9+-brightgreen.svg "版本号")
 ![FastAPI版本](https://img.shields.io/badge/FastAPI-0.62+-ff69b4.svg "版本号")
 
 [中文说明](./README.md) | [English](./README-en.md)
